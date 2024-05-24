@@ -24,7 +24,7 @@ namespace EldenRingDiscordPresence
             switch (Program.CurrentGameExecutable)
             {
                 case "start_protected_game":
-                    mainAddress = 0x7FF646220708;
+                    mainAddress = 0x7FF737980708; 
                     break;
                 case "eldenring":
                     mainAddress = 0x7FF722620708;
@@ -40,7 +40,7 @@ namespace EldenRingDiscordPresence
        
             long dereferencedBaseAddress = BitConverter.ToInt64(memoryProcess.ReadMemory(mainAddress, 8), 0);
 
-                lastGraceLocationID = memoryProcess.ReadInt32(dereferencedBaseAddress + graceOffset);
+            lastGraceLocationID = memoryProcess.ReadInt32(dereferencedBaseAddress + graceOffset);
             return lastGraceLocationID;
         }
 
