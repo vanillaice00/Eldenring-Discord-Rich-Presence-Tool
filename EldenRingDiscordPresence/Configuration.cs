@@ -10,11 +10,20 @@ namespace EldenRingDiscordPresence
     {
 
         public bool StartWithWindows {  get; set; }
+
+        public bool ShowGraceLocationName { get; set; }
+
+        public bool ShowElapsedTime { get; set; }
+
+        public bool ShowAreaImages { get; set; }
         public int UpdateDelay {  get; set; }
 
-        public Configuration(bool startWithWindows, int updateDelay)
+        public Configuration(bool startWithWindows, int updateDelay,bool showElapsedTime, bool showAreaImages, bool showGraceLocationName)
         {
             this.StartWithWindows = startWithWindows;
+            this.ShowElapsedTime = showElapsedTime;
+            this.ShowAreaImages = showAreaImages;
+            this.ShowGraceLocationName = showGraceLocationName;
             this.UpdateDelay = updateDelay;
         }
 

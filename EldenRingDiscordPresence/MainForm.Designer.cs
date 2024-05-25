@@ -41,6 +41,12 @@ namespace EldenRingDiscordPresence
             timeIntervalLabel = new Label();
             notifyIcon = new NotifyIcon(components);
             statusLabel = new Label();
+            graceIdTitle = new Label();
+            graceID = new Label();
+            showTimeElapsed = new CheckBox();
+            presenceSettings = new Label();
+            showImages = new CheckBox();
+            showGraceName = new CheckBox();
             SuspendLayout();
             // 
             // gameStatusTitleLabel
@@ -56,7 +62,7 @@ namespace EldenRingDiscordPresence
             // toggleStartOnStartup
             // 
             toggleStartOnStartup.AutoSize = true;
-            toggleStartOnStartup.Location = new Point(12, 49);
+            toggleStartOnStartup.Location = new Point(5, 217);
             toggleStartOnStartup.Name = "toggleStartOnStartup";
             toggleStartOnStartup.Size = new Size(187, 19);
             toggleStartOnStartup.TabIndex = 3;
@@ -69,7 +75,7 @@ namespace EldenRingDiscordPresence
             delayComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
             delayComboBox.FormattingEnabled = true;
             delayComboBox.Items.AddRange(new object[] { "10 Seconds", "30 Seconds", "60 Seconds" });
-            delayComboBox.Location = new Point(94, 71);
+            delayComboBox.Location = new Point(94, 143);
             delayComboBox.Name = "delayComboBox";
             delayComboBox.Size = new Size(124, 23);
             delayComboBox.TabIndex = 4;
@@ -78,7 +84,7 @@ namespace EldenRingDiscordPresence
             // timeIntervalLabel
             // 
             timeIntervalLabel.AutoSize = true;
-            timeIntervalLabel.Location = new Point(12, 74);
+            timeIntervalLabel.Location = new Point(12, 146);
             timeIntervalLabel.Name = "timeIntervalLabel";
             timeIntervalLabel.Size = new Size(76, 15);
             timeIntervalLabel.TabIndex = 5;
@@ -102,11 +108,78 @@ namespace EldenRingDiscordPresence
             statusLabel.TabIndex = 6;
             statusLabel.Text = "WAITING FOR GAME...";
             // 
+            // graceIdTitle
+            // 
+            graceIdTitle.AutoSize = true;
+            graceIdTitle.Location = new Point(302, 206);
+            graceIdTitle.Name = "graceIdTitle";
+            graceIdTitle.Size = new Size(97, 15);
+            graceIdTitle.TabIndex = 7;
+            graceIdTitle.Text = "Current Grace ID:";
+            // 
+            // graceID
+            // 
+            graceID.AutoSize = true;
+            graceID.Location = new Point(302, 221);
+            graceID.Name = "graceID";
+            graceID.Size = new Size(58, 15);
+            graceID.TabIndex = 8;
+            graceID.Text = "Unknown";
+            // 
+            // showTimeElapsed
+            // 
+            showTimeElapsed.AutoSize = true;
+            showTimeElapsed.Location = new Point(12, 74);
+            showTimeElapsed.Name = "showTimeElapsed";
+            showTimeElapsed.Size = new Size(127, 19);
+            showTimeElapsed.TabIndex = 9;
+            showTimeElapsed.Text = "Show elapsed Time";
+            showTimeElapsed.UseVisualStyleBackColor = true;
+            showTimeElapsed.CheckedChanged += timeElapsedChanged;
+            // 
+            // presenceSettings
+            // 
+            presenceSettings.AutoSize = true;
+            presenceSettings.Font = new Font("Segoe UI", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            presenceSettings.Location = new Point(5, 46);
+            presenceSettings.Name = "presenceSettings";
+            presenceSettings.Size = new Size(186, 25);
+            presenceSettings.TabIndex = 10;
+            presenceSettings.Text = "- Presence Settings -";
+            // 
+            // showImages
+            // 
+            showImages.AutoSize = true;
+            showImages.Location = new Point(12, 99);
+            showImages.Name = "showImages";
+            showImages.Size = new Size(121, 19);
+            showImages.TabIndex = 11;
+            showImages.Text = "Show area images";
+            showImages.UseVisualStyleBackColor = true;
+            showImages.CheckedChanged += imageCheckChanged;
+            // 
+            // showGraceName
+            // 
+            showGraceName.AutoSize = true;
+            showGraceName.Location = new Point(12, 124);
+            showGraceName.Name = "showGraceName";
+            showGraceName.Size = new Size(166, 19);
+            showGraceName.TabIndex = 12;
+            showGraceName.Text = "Show grace location name";
+            showGraceName.UseVisualStyleBackColor = true;
+            showGraceName.CheckedChanged += graceLocationChecked;
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(411, 109);
+            ClientSize = new Size(411, 241);
+            Controls.Add(showGraceName);
+            Controls.Add(showImages);
+            Controls.Add(presenceSettings);
+            Controls.Add(showTimeElapsed);
+            Controls.Add(graceID);
+            Controls.Add(graceIdTitle);
             Controls.Add(statusLabel);
             Controls.Add(timeIntervalLabel);
             Controls.Add(delayComboBox);
@@ -123,10 +196,32 @@ namespace EldenRingDiscordPresence
             PerformLayout();
         }
 
+        private void graceLocationChecked(object sender, EventArgs e)
+        {
+            Program.ConfigurationManager.CurrentConfiguration.ShowGraceLocationName = showGraceName.Checked;
+            Program.ConfigurationManager.updateConfigurationFile();
+        }
+
+        private void imageCheckChanged(object sender, EventArgs e)
+        {
+            Program.ConfigurationManager.CurrentConfiguration.ShowAreaImages = showImages.Checked;
+            Program.ConfigurationManager.updateConfigurationFile();
+        }
+
+        private void timeElapsedChanged(object sender, EventArgs e)
+        {
+            Program.ConfigurationManager.CurrentConfiguration.ShowElapsedTime = showTimeElapsed.Checked;
+            Program.ConfigurationManager.updateConfigurationFile();
+        }
+
         private void FromLoad(object sender, EventArgs e)
         {
             delayComboBox.SelectedIndex = Program.ConfigurationManager.CurrentConfiguration.UpdateDelay;
             toggleStartOnStartup.Checked = Program.ConfigurationManager.CurrentConfiguration.StartWithWindows;
+            showImages.Checked = Program.ConfigurationManager.CurrentConfiguration.ShowAreaImages;
+            showTimeElapsed.Checked = Program.ConfigurationManager.CurrentConfiguration.ShowElapsedTime;
+            showGraceName.Checked = Program.ConfigurationManager.CurrentConfiguration.ShowGraceLocationName;
+
 
         }
 
@@ -191,5 +286,11 @@ namespace EldenRingDiscordPresence
         private Label timeIntervalLabel;
         private NotifyIcon notifyIcon;
         private Label statusLabel;
+        private Label graceIdTitle;
+        private Label graceID;
+        private CheckBox showTimeElapsed;
+        private Label presenceSettings;
+        private CheckBox showImages;
+        private CheckBox showGraceName;
     }
 }
