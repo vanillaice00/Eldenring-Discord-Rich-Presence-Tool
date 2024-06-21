@@ -119,8 +119,8 @@ namespace EldenRingDiscordPresence
                 location = LocationRegister[locationId];
             }
 
-            imageKey = location.Contains(" - ") ? location.Split(" - ")[0] : "none";
-
+            imageKey = location.Contains(" - ") ? location.Split(" - ")[0].Replace(" ","").ToLower() : "none";
+            Debug.WriteLine(imageKey);
             RichPresence rich = new RichPresence();
 
             rich.WithDetails(location.Contains(" - ") ? location.Split(" - ")[0] : location);

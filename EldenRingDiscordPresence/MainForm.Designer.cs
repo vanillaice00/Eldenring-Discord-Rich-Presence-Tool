@@ -153,9 +153,9 @@ namespace EldenRingDiscordPresence
             showImages.AutoSize = true;
             showImages.Location = new Point(12, 99);
             showImages.Name = "showImages";
-            showImages.Size = new Size(121, 19);
+            showImages.Size = new Size(123, 19);
             showImages.TabIndex = 11;
-            showImages.Text = "Show area images";
+            showImages.Text = "Show Area Images";
             showImages.UseVisualStyleBackColor = true;
             showImages.CheckedChanged += imageCheckChanged;
             // 
@@ -164,9 +164,9 @@ namespace EldenRingDiscordPresence
             showGraceName.AutoSize = true;
             showGraceName.Location = new Point(12, 124);
             showGraceName.Name = "showGraceName";
-            showGraceName.Size = new Size(166, 19);
+            showGraceName.Size = new Size(172, 19);
             showGraceName.TabIndex = 12;
-            showGraceName.Text = "Show grace location name";
+            showGraceName.Text = "Show Grace Location Name";
             showGraceName.UseVisualStyleBackColor = true;
             showGraceName.CheckedChanged += graceLocationChecked;
             // 
