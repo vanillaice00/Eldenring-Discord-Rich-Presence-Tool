@@ -47,6 +47,7 @@ namespace EldenRingDiscordPresence
             presenceSettings = new Label();
             showImages = new CheckBox();
             showGraceName = new CheckBox();
+            cloudLocationRegister = new CheckBox();
             SuspendLayout();
             // 
             // gameStatusTitleLabel
@@ -75,7 +76,7 @@ namespace EldenRingDiscordPresence
             delayComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
             delayComboBox.FormattingEnabled = true;
             delayComboBox.Items.AddRange(new object[] { "10 Seconds", "30 Seconds", "60 Seconds" });
-            delayComboBox.Location = new Point(94, 143);
+            delayComboBox.Location = new Point(144, 174);
             delayComboBox.Name = "delayComboBox";
             delayComboBox.Size = new Size(124, 23);
             delayComboBox.TabIndex = 4;
@@ -84,11 +85,11 @@ namespace EldenRingDiscordPresence
             // timeIntervalLabel
             // 
             timeIntervalLabel.AutoSize = true;
-            timeIntervalLabel.Location = new Point(12, 146);
+            timeIntervalLabel.Location = new Point(12, 176);
             timeIntervalLabel.Name = "timeIntervalLabel";
-            timeIntervalLabel.Size = new Size(76, 15);
+            timeIntervalLabel.Size = new Size(126, 15);
             timeIntervalLabel.TabIndex = 5;
-            timeIntervalLabel.Text = "Update every";
+            timeIntervalLabel.Text = "Update Presence every";
             // 
             // notifyIcon
             // 
@@ -169,11 +170,23 @@ namespace EldenRingDiscordPresence
             showGraceName.UseVisualStyleBackColor = true;
             showGraceName.CheckedChanged += graceLocationChecked;
             // 
+            // cloudLocationRegister
+            // 
+            cloudLocationRegister.AutoSize = true;
+            cloudLocationRegister.Location = new Point(12, 149);
+            cloudLocationRegister.Name = "cloudLocationRegister";
+            cloudLocationRegister.Size = new Size(176, 19);
+            cloudLocationRegister.TabIndex = 13;
+            cloudLocationRegister.Text = "Use Cloud Location-Register";
+            cloudLocationRegister.UseVisualStyleBackColor = true;
+            cloudLocationRegister.CheckedChanged += cloudChecked;
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(411, 241);
+            Controls.Add(cloudLocationRegister);
             Controls.Add(showGraceName);
             Controls.Add(showImages);
             Controls.Add(presenceSettings);
@@ -194,6 +207,12 @@ namespace EldenRingDiscordPresence
             Resize += MainForm_Resize;
             ResumeLayout(false);
             PerformLayout();
+        }
+
+        private void cloudChecked(object sender, EventArgs e)
+        {
+            Program.ConfigurationManager.CurrentConfiguration.UseCloudLocationRegister = cloudLocationRegister.Checked;
+            Program.ConfigurationManager.updateConfigurationFile();
         }
 
         private void graceLocationChecked(object sender, EventArgs e)
@@ -222,6 +241,7 @@ namespace EldenRingDiscordPresence
             showTimeElapsed.Checked = Program.ConfigurationManager.CurrentConfiguration.ShowElapsedTime;
             showGraceName.Checked = Program.ConfigurationManager.CurrentConfiguration.ShowGraceLocationName;
 
+            cloudLocationRegister.Checked = Program.ConfigurationManager.CurrentConfiguration.UseCloudLocationRegister;
 
         }
 
@@ -292,5 +312,6 @@ namespace EldenRingDiscordPresence
         private Label presenceSettings;
         private CheckBox showImages;
         private CheckBox showGraceName;
+        private CheckBox cloudLocationRegister;
     }
 }

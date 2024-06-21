@@ -20,6 +20,7 @@ namespace EldenRingDiscordPresence
         private static DiscordRpcClient RpcClient;
         private static Timestamps startGameTimestamp;
         public static string CurrentGameExecutable;
+        
 
         [STAThread]
         static void Main()
@@ -27,12 +28,27 @@ namespace EldenRingDiscordPresence
 
             ApplicationConfiguration.Initialize();
             ConfigurationManager = new ConfigurationManager();
-            if(!File.Exists("LocationRegister.json"))
+          
+
+            if(ConfigurationManager.CurrentConfiguration.UseCloudLocationRegister)
             {
-                MessageBox.Show("Could not find LocationRegister.json\nPlease make sure to put the LocationRegister.json file in the same directory as this executable.", "Failed to load LocationRegister", MessageBoxButtons.OK,MessageBoxIcon.Error);
-                return;
+        
+                string webData = System.Text.Encoding.UTF8.GetString(new System.Net.WebClient().DownloadData("https://raw.githubusercontent.com/derfurkan/Eldenring-Discord-Rich-Presence-Tool/master/LocationRegister.json"));
+
+                LocationRegister = JsonConvert.DeserializeObject<Dictionary<long, string>>(webData);
+
+            } else
+            {
+                if (!File.Exists("LocationRegister.json"))
+                {
+                    MessageBox.Show("Could not find LocationRegister.json\nPlease make sure to put the LocationRegister.json file in the same directory as this executable.\n\nOr toggle 'Use Cloud Location-Register' and Re-Launch.", "Failed to load LocationRegister", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                } else
+                {
+                    LocationRegister = JsonConvert.DeserializeObject<Dictionary<long, string>>(File.ReadAllText("LocationRegister.json"));
+                }
+              
             }
-            LocationRegister = JsonConvert.DeserializeObject<Dictionary<long, string>>(File.ReadAllText("LocationRegister.json"));
+
             RpcClient = new DiscordRpcClient("1243218524554530998");
 
             RpcClient.Initialize();
@@ -66,6 +82,7 @@ namespace EldenRingDiscordPresence
 
         private static void OnTimerElapsed(object? sender, ElapsedEventArgs e)
         {
+           
             if (!IsGameLoaded())
             {
                 MainForm.SetStatus("WAITING FOR GAME...", Color.DarkOrange);
@@ -102,7 +119,7 @@ namespace EldenRingDiscordPresence
                 location = LocationRegister[locationId];
             }
 
-            imageKey = GetImageKey(location);
+            imageKey = location.Contains(" - ") ? location.Split(" - ")[0] : "none";
 
             RichPresence rich = new RichPresence();
 
@@ -136,41 +153,7 @@ namespace EldenRingDiscordPresence
             MemoryUtility.CloseMemoryProcess();
         }
 
-        private static string GetImageKey(string location)
-        {
-            return location switch
-            {
-                var loc when loc.Contains("Liurnia") => "liurnia",
-                var loc when loc.Contains("Limgrave") => "limgrave",
-                var loc when loc.Contains("Caelid") => "caelid",
-                var loc when loc.Contains("Altus Plateau") => "altus",
-                var loc when loc.Contains("Volcano Manor") => "vulcan",
-                var loc when loc.Contains("Crumbling Farum Azula") => "azula",
-                var loc when loc.Contains("Academy") => "academy",
-                var loc when loc.Contains("Mountaintops") => "mountaintops",
-                var loc when loc.Contains("Leyndell") => "leyndell",
-                var loc when loc.Contains("Ainsel") => "ainsel",
-                var loc when loc.Contains("Deeproot") => "deeproot",
-                var loc when loc.Contains("Flame Peak") => "flame_peak",
-                var loc when loc.Contains("Mt. Gelmir") => "gelmir",
-                var loc when loc.Contains("Haligtree") => "haligtree",
-                var loc when loc.Contains("Lake of Rot") => "lake-of-rot",
-                var loc when loc.Contains("Nokron") => "nokron",
-                var loc when loc.Contains("Nokstella") => "nokstella",
-                var loc when loc.Contains("Roundtable") => "roundtable",
-                var loc when loc.Contains("Stormveil") => "stormveil",
-                var loc when loc.Contains("Weeping") => "weeping",
-                var loc when loc.Contains("Siofra") => "siofra",
-                var loc when loc.Contains("Aeonia") => "aeonia",
-                var loc when loc.Contains("Moonlight") => "moonlight",
-                var loc when loc.Contains("Consecrated Snowfield") => "snowfield",
-                var loc when loc.Contains("?") => "start",
-                var loc when loc.Contains("Subterranean") => "underground",
-                var loc when loc.Contains("Forbidden") => "forbidden",
 
-                _ => "none"
-            };
-        }
 
         public static void StopTimer()
         {

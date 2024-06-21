@@ -24,7 +24,7 @@ namespace EldenRingDiscordPresence
         private static readonly string Mask = CreateMask(Pattern);
         private const int PatternOffset = 3;
         private const int AddressAdjustment = 7;
-        private const long GraceOffset = 0xB3C;
+        private const long GraceOffset = 0xB6C;
 
         private IntPtr _processHandle = IntPtr.Zero;
         private Process _process;

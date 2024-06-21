@@ -21,7 +21,7 @@ namespace EldenRingDiscordPresence
             createFilesIfNotExisting();
             if (new FileInfo(configurationFilePath).Length == 0)
             {
-                CurrentConfiguration = new Configuration(false, 1,true,true,true);
+                CurrentConfiguration = new Configuration(false, 1,true,true,true,true);
                 File.WriteAllText(configurationFilePath, JsonConvert.SerializeObject(CurrentConfiguration));
             } else
             {

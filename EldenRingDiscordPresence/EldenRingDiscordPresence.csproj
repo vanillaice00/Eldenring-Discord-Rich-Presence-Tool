@@ -40,15 +40,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="MemorySharp">
-      <HintPath>..\..\..\..\Downloads\MemorySharp.dll</HintPath>
-    </Reference>
-    <Reference Include="MemoryX">
-      <HintPath>..\..\..\..\Downloads\MemoryX.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-
-  <ItemGroup>
     <None Update="LocationRegister.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
